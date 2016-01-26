@@ -50,6 +50,7 @@
     <Compile Include="Compiler\Translation\Expression\Accessors\Members\ObjectMemberExpressionBuilder.cs" />
     <Compile Include="Compiler\Translation\Expression\Accessors\Members\ObjectMemberKey.cs" />
     <Compile Include="Compiler\Translation\Expression\Accessors\Members\ObjectMemberKeyEqualityComparer.cs" />
+    <Compile Include="Compiler\Translation\Expression\Accessors\NullInstanceMemberAccessor.cs" />
     <Compile Include="Compiler\Translation\Expression\Accessors\ObjectMemberMemberAccessor.cs" />
     <Compile Include="Compiler\Translation\Expression\HelperFunctionBinder.cs" />
     <Compile Include="Compiler\Translation\Expression\Accessors\IMemberAccessor.cs" />

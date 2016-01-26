@@ -19,6 +19,7 @@ namespace HandlebarsDotNet
         public ICollection<IMemberAccessor> MemberAccessors { get; private set; }
 
         public void AddDefaultMemberAccessors() {
+            MemberAccessors.Add(new NullInstanceMemberAccessor());
             MemberAccessors.Add(new EnumerableMemberAccessor());
             MemberAccessors.Add(new DynamicMetaObjectProviderMemberAccessor());
             MemberAccessors.Add(new GenericDictionaryMemberAccessor());

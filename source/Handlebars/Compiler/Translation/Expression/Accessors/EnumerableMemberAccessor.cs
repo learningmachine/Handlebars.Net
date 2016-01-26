@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace HandlebarsDotNet.Compiler.Translation.Expression.Accessors
 {
-    internal class EnumerableMemberAccessor : IMemberAccessor
+    public class EnumerableMemberAccessor : IMemberAccessor
     {
         private static readonly Regex IndexRegex = new Regex(@"^\[?(?<index>\d+)\]?$", RegexOptions.None);
 

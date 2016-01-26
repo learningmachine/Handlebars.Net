@@ -7,7 +7,7 @@ using HandlebarsDotNet.Compiler.Translation.Expression.Accessors.GenericDictiona
 
 namespace HandlebarsDotNet.Compiler.Translation.Expression.Accessors
 {
-    internal sealed class GenericDictionaryMemberAccessor : IMemberAccessor
+    public sealed class GenericDictionaryMemberAccessor : IMemberAccessor
     {
         //TODO: Maybe use a sliding cache or something. I'm afraid for long running processes with lots of different types.
         private static readonly IDictionary<Type, GenericDictionaryProxy> Proxies = new Dictionary<Type, GenericDictionaryProxy>();

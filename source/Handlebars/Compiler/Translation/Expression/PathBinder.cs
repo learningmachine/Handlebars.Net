@@ -1,29 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using System.IO;
-using System.Collections.Generic;
-using HandlebarsDotNet.Compiler.Translation.Expression.Accessors;
 
 namespace HandlebarsDotNet.Compiler
 {
     internal class PathBinder : HandlebarsExpressionVisitor
     {
-        private static List<IMemberAccessor> _accessors;
-
-        static PathBinder()
-        {
-            _accessors = new List<IMemberAccessor>()
-            {
-                new EnumerableMemberAccessor(),
-                new DynamicMetaObjectProviderMemberAccessor(),
-                new GenericDictionaryMemberAccessor(),
-                new DictionaryMemberAccessor(),
-                new ObjectMemberMemberAccessor(),
-            };
-        }
-
         public static Expression Bind(Expression expr, CompilationContext context)
         {
             return new PathBinder(context).Visit(expr);
@@ -63,6 +46,12 @@ namespace HandlebarsDotNet.Compiler
                 Visit(node.Test),
                 Visit(node.IfTrue),
                 Visit(node.IfFalse));
+        }
+
+        protected override Expression VisitSubExpression(SubExpressionExpression subex)
+        {
+            return HandlebarsExpression.SubExpression(
+                Visit(subex.Expression));
         }
 
         protected override Expression VisitStatementExpression(StatementExpression sex)
@@ -123,7 +112,7 @@ namespace HandlebarsDotNet.Compiler
                     foreach (var memberName in segment.Split('.'))
                     {
                         instance = this.ResolveValue(context, instance, memberName);
-                        if (instance is UndefinedBindingResult)
+                        if (instance is UndefinedBindingResult || instance == null)
                         {
                             break;
                         }
@@ -147,9 +136,9 @@ namespace HandlebarsDotNet.Compiler
         
         private object AccessMember(object instance, string memberName)
         {
-            var resolvedMemberName = ResolveMemberName(memberName);
+            var resolvedMemberName = ResolveMemberName(instance, memberName);
 
-            foreach (var accessor in _accessors)
+            foreach (var accessor in this.CompilationContext.Configuration.MemberAccessors)
             {
                 var mn = accessor.RequiresResolvedMemberName ? resolvedMemberName : memberName;
 
@@ -163,10 +152,10 @@ namespace HandlebarsDotNet.Compiler
             return new UndefinedBindingResult();
         }
 
-        private string ResolveMemberName(string memberName)
+        private string ResolveMemberName(object instance, string memberName)
         {
             var resolver = this.CompilationContext.Configuration.ExpressionNameResolver;
-            return resolver != null ? resolver.ResolveExpressionName(memberName) : memberName;
+            return resolver != null ? resolver.ResolveExpressionName(instance, memberName) : memberName;
         }
     }
 }

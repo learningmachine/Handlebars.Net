@@ -2,7 +2,7 @@
 
 namespace HandlebarsDotNet.Compiler.Translation.Expression.Accessors
 {
-    internal class DictionaryMemberAccessor : IMemberAccessor
+    public class DictionaryMemberAccessor : IMemberAccessor
     {
         /// <summary>
         /// Determines if the memberName passed later should be the memberName or the resolvedMemberName.

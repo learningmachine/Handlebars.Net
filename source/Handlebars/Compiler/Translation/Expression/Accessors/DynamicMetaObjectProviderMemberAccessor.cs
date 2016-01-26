@@ -6,7 +6,7 @@ namespace HandlebarsDotNet.Compiler.Translation.Expression.Accessors
     /// <summary>
     /// Member accessor for crude handling of dynamic objects that don't have metadata
     /// </summary>
-    internal sealed class DynamicMetaObjectProviderMemberAccessor : IMemberAccessor
+    public sealed class DynamicMetaObjectProviderMemberAccessor : IMemberAccessor
     {
         /// <summary>
         /// Determines if the memberName passed later should be the memberName or the memberName.
@@ -38,6 +38,9 @@ namespace HandlebarsDotNet.Compiler.Translation.Expression.Accessors
             try
             {
                 var value = GetProperty(instance, memberName);
+                if (value == null)
+                    return new UndefinedBindingResult();
+
                 return value;
             }
             catch
